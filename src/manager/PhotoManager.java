@@ -63,25 +63,37 @@ public class PhotoManager {
         return locationMap.get(location);
     }
 
-    public Set<Photo> searchByMultipleTags(Set<String> tags) {
-        boolean first = true;
-        Set<Photo> result = new HashSet<>();
+    public ArrayList<Photo> searchByMultipleTags(Set<String> tags) {
 
-        for (String tag : tags) {
-            List<Photo> list = tagMap.get(tag);
-            if (list == null) {
-                return new HashSet<>();
-            }
-            if (first) {
-                result.addAll(list);
-                first = false;
-            } else {
-                Set<Photo> set = new HashSet<>(list);
-                result.retainAll(set);
+
+        //old way
+//        boolean first = true;
+//        Set<Photo> result = new HashSet<>();
+//
+//        for (String tag : tags) {
+//            List<Photo> list = tagMap.get(tag);
+//            if (list == null) {
+//                return new HashSet<>();
+//            }
+//            if (first) {
+//                result.addAll(list);
+//                first = false;
+//            } else {
+//                Set<Photo> set = new HashSet<>(list);
+//                result.retainAll(set);
+//            }
+//        }
+//
+//        return result;
+//    }
+
+        ArrayList<Photo> result = new ArrayList<>();
+        for(Photo photo :photos){
+            if(photo.getTags().containsAll(tags)){
+                result.add(photo);
             }
         }
 
         return result;
-    }
 
-}
+}}
