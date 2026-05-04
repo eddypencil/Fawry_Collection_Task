@@ -3,25 +3,85 @@ package manager;
 import photo.Photo;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.*;
 
 public class PhotoManager {
+    ArrayList<Photo> photos = new ArrayList<>();
+    HashMap<String, ArrayList<Photo>> tagMap = new HashMap<>();
+    HashMap<LocalDate, ArrayList<Photo>> dateMap = new HashMap<>();
+    HashMap<String, ArrayList<Photo>> locationMap = new HashMap<>();
 
-    public void uploadPhoto(Photo photo){
+
+    private<T> void hashMapKeyExistCheckAndAdd(T key, Map<T,ArrayList<Photo>> map , Photo photo){
+        if (map.containsKey(key)) {
+            map.get(key).add(photo);
+        } else {
+            ArrayList<Photo> photoList =new ArrayList<>();
+            photoList.add(photo);
+            map.put(key,photoList);
+        }
 
     }
 
-    public void searchByTag(String tag){}
+    public void uploadPhoto(Photo photo) {
+        photos.add(photo);
 
+        //tags
+        Set<String> tags = photo.getTags();
+        for (String tag : tags) {
+            hashMapKeyExistCheckAndAdd(tag,tagMap,photo);
 
-    public void searchByDate( LocalDate date){
-
-    }
-
-    public void searchByLocation(String location){}
-
-        public void searchByMultipleTags(Set<String> tags){
 
         }
+
+
+
+        hashMapKeyExistCheckAndAdd(photo.getDate(),dateMap,photo);
+
+
+        hashMapKeyExistCheckAndAdd(photo.getLocation(),locationMap,photo);
+
+
+
+
+
+
+
+    }
+
+    public List<Photo> searchByTag(String tag) {
+        return tagMap.get(tag);
+    }
+
+
+    public ArrayList<Photo> searchByDate(LocalDate date) {
+        return dateMap.get(date);
+    }
+
+    public ArrayList<Photo> searchByLocation(String location) {
+
+        return locationMap.get(location);
+    }
+
+    public Set<Photo> searchByMultipleTags(Set<String> tags) {
+        boolean first = true;
+        Set<Photo> result = new HashSet<>();
+
+        for (String tag : tags) {
+            List<Photo> list = tagMap.get(tag);
+            if (list == null) {
+                return new HashSet<>();
+            }
+            if (first) {
+                result.addAll(list);
+                first = false;
+            } else {
+                Set<Photo> set = new HashSet<>(list);
+                result.retainAll(set);
+            }
+        }
+
+        return result;
+    }
 
 }
