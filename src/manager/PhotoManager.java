@@ -30,22 +30,11 @@ public class PhotoManager {
         Set<String> tags = photo.getTags();
         for (String tag : tags) {
             hashMapKeyExistCheckAndAdd(tag,tagMap,photo);
-
-
         }
-
-
 
         hashMapKeyExistCheckAndAdd(photo.getDate(),dateMap,photo);
 
-
         hashMapKeyExistCheckAndAdd(photo.getLocation(),locationMap,photo);
-
-
-
-
-
-
 
     }
 
@@ -54,18 +43,15 @@ public class PhotoManager {
     }
 
 
-    public ArrayList<Photo> searchByDate(LocalDate date) {
+    public ArrayList<Photo> searchByDate(LocalDate date){
         return dateMap.get(date);
     }
 
     public ArrayList<Photo> searchByLocation(String location) {
-
         return locationMap.get(location);
     }
 
     public ArrayList<Photo> searchByMultipleTags(Set<String> tags) {
-
-
         //old way
 //        boolean first = true;
 //        Set<Photo> result = new HashSet<>();
@@ -87,6 +73,10 @@ public class PhotoManager {
 //        return result;
 //    }
 
+        if (tags.isEmpty()){
+            ArrayList<Photo> empty = new ArrayList<>();
+            return empty;
+        }
         ArrayList<Photo> result = new ArrayList<>();
         for(Photo photo :photos){
             if(photo.getTags().containsAll(tags)){
